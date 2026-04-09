@@ -1,6 +1,7 @@
 import pandas as pd
 from sklearn.preprocessing import LabelEncoder
 import os
+import joblib
 
 def clean_data(file_path, output_path):
     # so we can see 50 columns at once, better for debugging
@@ -21,8 +22,8 @@ def clean_data(file_path, output_path):
     total_missing = df.isnull().sum()
     print(f"Total missing values in each column:\n{total_missing}")
 
-    # we will use LabelEnconder to convert strings to unique integers
-    le = LabelEncoder()
+    # we will use LabelEnconder to convert strings to unique integers (we will also save the enconders for later use in the API)
+    encoders = {}
     categorical_columns = [
         'experience_level',
         'employment_type',
@@ -33,9 +34,14 @@ def clean_data(file_path, output_path):
     ]
 
     for col in categorical_columns:
+        le = LabelEncoder()
         df[col] = le.fit_transform(df[col])
+        encoders[col] = le
 
-    print(f"DataFrame head after encoding categorical variables:\n{df.head()}")
+    joblib.dump(encoders, 'models/encoders.joblib')
+    print("💾 Encoders saved to models/encoders.joblib")
+
+    print(f"\nDataFrame head after encoding categorical variables:\n{df.head()}")
 
     # lets check if everything is okay before saving the new data
     print("\nF--- Final Data Types ---")
