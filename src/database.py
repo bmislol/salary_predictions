@@ -37,3 +37,12 @@ class SupabaseService:
         except Exception as e:
             print(f"❌ Supabase Error: {e}")
             return None
+        
+    def get_predictions(self):
+        # fetches all past predictions from supabase for the dashboard.
+        try:
+            response = self.supabase.table("salary_predictions").select("*").order("created_at", desc=True).execute()
+            return response.data
+        except Exception as e:
+            print(f"❌ Error fetching from Supabase: {e}")
+            return []
