@@ -1,5 +1,6 @@
 import os
 import sys
+import requests
 
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
 
@@ -78,7 +79,7 @@ def main():
                     fig.update_layout(plot_bgcolor='rgba(0,0,0,0)', paper_bgcolor='rgba(0,0,0,0)', 
                                     font=dict(color='#d3c6aa'), margin=dict(t=10, b=10))
                     # FIXED: use on_container_width='stretch' for modern Streamlit
-                    st.plotly_chart(fig, on_container_width='stretch')
+                    st.plotly_chart(fig, width='stretch')
 
     # --- TAB 2: CREATE NEW PREDICTION ---
     with tab_new:
