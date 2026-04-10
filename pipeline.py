@@ -3,6 +3,7 @@ import pandas as pd
 import os
 import joblib
 from src.llm_analyst import LLMAnalyst
+from src.database import SupabaseService
 
 # configuration
 API_URL = "http://localhost:8000/predict"
@@ -64,7 +65,11 @@ def run_pipeline(scenario):
             print(f"Values: {report['chart_data']['values']}")
 
         # IMPORTANT: This 'report' dictionary is exactly what we will 
-        # push to Supabase in the next step (Requirement 6).
+        db = SupabaseService()
+        db.save_prediction(scenario, predicted_salary, report)
+
+        print(f"💰 Saved Prediction: ${predicted_salary:,.2f}")
+        print(f"📄 Saved Narrative: {report.get('narrative')[:50]}...")
 
     except requests.exceptions.RequestException as e:
         print(f"❌ API Connection Error From Pipeline: {e}")

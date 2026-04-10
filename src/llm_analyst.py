@@ -7,7 +7,7 @@ class LLMAnalyst:
 
     def generate_insights(self, job_data, predicted_salary, market_avg):
         # we will use a structured prompt to ensure story telling and visualization
-        promt = f"""
+        prompt = f"""
         You are a Senior Data Science Career Consultant.
         Analyze this predicted salary: ${predicted_salary:,.2f}
 
@@ -37,7 +37,7 @@ class LLMAnalyst:
             # we used format = json here to ensure the output is machine-readable
             response = ollama.chat(
                 model=self.model_name, 
-                messages=[{"role": "user", "content": promt}],
+                messages=[{"role": "user", "content": prompt}],
                 format="json"
             )
             # parse string into a python dict
